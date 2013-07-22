@@ -4,14 +4,10 @@ var app = express();
 app.use(express.logger());
 
 app.get('/', function(request, response) {
-//  response.send('Hello World Test2!');
     response.send('reached break point1');
-    var data = fs.readFileSync('index.html', 'utf8') {
-	if (err) throw err;
-	response.send(data);
-	response.send('reached break point 2');
-    });
-});
+    var data = fs.readFileSync('index.html', 'utf8');
+    response.send(data);
+}
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
