@@ -5,8 +5,8 @@ app.use(express.logger());
 
 app.get('/', function(request, response) {
     response.send('reached break point1');
-    var data = fs.readFileSync('index.html', 'utf8');
-    response.send(data);
+//    var data = fs.readFileSync('index.html', 'utf8');
+//    response.send(data);
 }
 
 var port = process.env.PORT || 5000;
