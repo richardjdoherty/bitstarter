@@ -3,12 +3,12 @@ var app = express();
 app.use(express.logger());
 
 app.get('/', function(request, response) {
-  response.send('Hello World Test2!');
-//    response.send('reached break point');
-//    fs.readFileSync('index.html', function (err, data) {
-//	if (err) throw err;
-//	response.send(data);
-//    });
+//  response.send('Hello World Test2!');
+    response.send('reached break point');
+    fs.readFileSync('index.html', function (err, data) {
+	if (err) throw err;
+	response.send(data);
+    });
 });
 
 var port = process.env.PORT || 5000;
