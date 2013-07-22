@@ -5,14 +5,15 @@ var express = require('express');
 var app = express();
 app.use(express.logger());
 
-fs.readFile('index.html', function (err, buf) {
+
+fs.readFileSync(this.directory + '/index.html', function (err, buf) {
   response.send('reached checkpoint');
   if (err) throw err;
-  console.log(data);
+  
 });
 
 app.get('/', function(request, response) {
-  response.send('Hello World 2!');
+  response.send(buf.toString('utf8'));
 });
 
 var port = process.env.PORT || 5000;
