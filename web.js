@@ -1,5 +1,6 @@
 //var buffer = new buffer(30);
 
+var buf = new Buffer('Hello World from index.html!','utf-8');
 
 var express = require('express');
 var app = express();
