@@ -1,3 +1,4 @@
+var fs = require('fs');
 
 var buf = new Buffer('Hello World from index.html!','utf-8');
 
