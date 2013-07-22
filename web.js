@@ -6,6 +6,11 @@ var express = require('express');
 var app = express();
 app.use(express.logger());
 
+fs.readFileSync('index.html', function (err, buf) {
+  if (err) throw err;
+  console.log(data);
+});
+
 app.get('/', function(request, response) {
   response.send('Hello World 2!');
 });
