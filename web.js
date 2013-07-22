@@ -5,13 +5,13 @@ var express = require('express');
 var app = express();
 app.use(express.logger());
 
-/*
+
 fs.readFileSync('index.html', function (err, buf) {
   response.send('reached checkpoint');
   if (err) throw err;
   
 });
-*/
+
 
 app.get('/', function(request, response) {
   response.send(new Buffer(buf.toString('utf8')));
