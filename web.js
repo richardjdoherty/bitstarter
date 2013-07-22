@@ -1,3 +1,4 @@
+var fs = require('fs');
 var express = require('express');
 var app = express();
 app.use(express.logger());
@@ -5,8 +6,8 @@ app.use(express.logger());
 app.get('/', function(request, response) {
 //  response.send('Hello World Test2!');
     response.send('reached break point');
-    fs.readFileSync('index.html', function (err, data) {
-	if (err) throw err;
+    var data = fs.readFileSync('index.html', 'utf8') {
+//	if (err) throw err;
 	response.send(data);
 	response.send('reached break point 2');
     });
