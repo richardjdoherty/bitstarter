@@ -22,6 +22,10 @@ References:
 */
 
 var fs = require('fs');
+
+var rest = require('restler');  // rjd 23 July 2013
+var sys = require('util');      // rjd 23 July 2013
+
 var program = require('commander');
 var cheerio = require('cheerio');
 var HTMLFILE_DEFAULT = "index.html";
@@ -62,13 +66,26 @@ var clone = function(fn) {
 };
 
 if(require.main == module) {
+
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
         .parse(process.argv);
-    var checkJson = checkHtmlFile(program.file, program.checks);
-    var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
+
+
+    // rjd 23 July 2013
+    if (program.url) {
+        downloadHtml(program.url, function(result) {
+            checkJson = checkHtmlFile(result, program.checks, false);
+            outJson = JSON.stringify(checkJson, null, 4);
+            console.log(outJson);
+        });
+    }    
+    else {
+        var checkJson = checkHtmlFile(program.file, program.checks);
+        var outJson = JSON.stringify(checkJson, null, 4);
+        console.log(outJson);
+    }
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
