@@ -44,6 +44,11 @@ var cheerioHtmlFile = function(htmlfile) {
     return cheerio.load(fs.readFileSync(htmlfile));
 };
 
+// rjd 23 July 2013
+var cheerioUrl = function(url) {
+    return cheerio.load(url);
+};
+
 var loadChecks = function(checksfile) {
     return JSON.parse(fs.readFileSync(checksfile));
 };
@@ -56,8 +61,25 @@ var checkHtmlFile = function(htmlfile, checksfile) {
         var present = $(checks[ii]).length > 0;
         out[checks[ii]] = present;
     }
-    return out;
+    // rjd 23 July 2013
+    var outJson = JSON.stringify(out, null, 4);
+    console.log(outJson);
 };
+
+// rjd 23 July 2013
+var checkUrl = function(url, checksfile) {
+    rest.get(url).on('complete', function(url) {
+        $ = cheerioUrl;
+        var checks = loadChecks(checksfile).sort();
+        var out = {};
+        for(var ii in checks) {
+            var present = $(checks[ii]).length > 0;
+            out[checks[ii]] = present;
+        }
+        var outJson = JSON.stringify(out, null, 4);
+        console.log(outJson);
+    });
+}
 
 var clone = function(fn) {
     // Workaround for commander.js issue.
@@ -65,27 +87,32 @@ var clone = function(fn) {
     return fn.bind({});
 };
 
+
 if(require.main == module) {
 
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
+        .option('-u, --url <url>', 'Url to index.html')  // rjd 23 july 2013
         .parse(process.argv);
 
 
     // rjd 23 July 2013
     if (program.url) {
-        downloadHtml(program.url, function(result) {
-            checkJson = checkHtmlFile(result, program.checks, false);
-            outJson = JSON.stringify(checkJson, null, 4);
-            console.log(outJson);
-        });
-    }    
-    else {
-        var checkJson = checkHtmlFile(program.file, program.checks);
-        var outJson = JSON.stringify(checkJson, null, 4);
-        console.log(outJson);
+
+        //console.log("url: " + program.url);
+
+        var checkJson = checkUrl(program.url, program.checks); 
+
     }
-} else {
+    else {
+
+        var checkJson = checkHtmlFile(program.file, program.checks);
+
+    }
+} 
+else {
     exports.checkHtmlFile = checkHtmlFile;
 }
+
+
